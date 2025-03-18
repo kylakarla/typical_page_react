@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import MainHeader from './components/MainHeader/MainHeader'
 import Login from '../src/components/Login/Login.jsx'
 import Home from './components/Home/Home.jsx'
+import AuthContext from './components/store/auth-context.jsx'
 
 
 function App() {
@@ -44,17 +45,24 @@ function App() {
   };
 
   return (
-    <React.Fragment>
-      <MainHeader isAuthenticated={loggedIn} onLogout={logoutHandler} />
-      
-      <main>
-        {}
-        {!loggedIn && <Login onLogin={loginHandler} />}
+    <AuthContext.Provider value={
+      {
+        loggedIn: loggedIn,
+        onLogout:logoutHandler
+      }
+    }>
+      <React.Fragment>
+        <MainHeader isAuthenticated={loggedIn} onLogout={logoutHandler} />
         
-        {/* Show Home if user is logged in */}
-        {loggedIn && <Home />}
-      </main>
-    </React.Fragment>
+        <main>
+          {}
+          {!loggedIn && <Login onLogin={loginHandler} />}
+          
+          {/* Show Home if user is logged in */}
+          {loggedIn && <Home />}
+        </main>
+      </React.Fragment>
+    </AuthContext.Provider>
   );
 }
 
